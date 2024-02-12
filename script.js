@@ -1,22 +1,27 @@
 // override console.log
 const oldConsoleLog = console.log;
-console.log = (...msg) => {
-    const msgStr = msg.map(arg => {
+console.log = (...args) => {
+    const msgStr = args.map(arg => {
         if (typeof arg === 'object') {
-          try {
-            return JSON.stringify(arg, null, 2)
-            .replace(/\n/g, '<br>')
-            .replace(/\s/g, '&nbsp;')
-          } catch (error) {
-            return 'Unable to stringify object';
-          }
+            try {
+                return JSON.stringify(arg, null, 2)
+                    .replace(/\n/g, '<br>')
+                    .replace(/\s/g, '&nbsp;')
+            } catch (error) {
+                return 'Unable to stringify object';
+            }
         } else {
-          return String(arg);
+            return String(arg);
         }
-      }).join(' ');
-    oldConsoleLog.apply(console, msg);
+    }).join(' ');
+    oldConsoleLog.apply(console, args);
     const outputElement = document.getElementById('output');
     outputElement.innerHTML += msgStr + '<br>';
+    // 行数が1000を超えたら、古い行を削除
+    while (outputElement.children.length > 1000) {
+        outputElement.removeChild(outputElement.firstChild);
+    }
+    // 一番下にスクロール
     outputElement.scrollTop = outputElement.scrollHeight;
 };
 
