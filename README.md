@@ -1,5 +1,5 @@
 # about
-Simple midi input test webpage.
+Simple midi input test webpage.  
 MIDI入力の値を確認できるだけのwebページ
 
 # demo page
