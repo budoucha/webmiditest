@@ -3,4 +3,5 @@ div#output {
     overflow-y: scroll;
     background-color: #000b;
     color: white;
+    font-size: small;
 }
