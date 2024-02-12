@@ -1,9 +1,23 @@
 // override console.log
 const oldConsoleLog = console.log;
-console.log = (msg) => {
-    oldConsoleLog(msg);
+console.log = (...msg) => {
+    // const msgStr = msg.join(' ');
+    const msgStr = msg.map(arg => {
+        if (typeof arg === 'object') {
+          try {
+            return JSON.stringify(arg, null, 2)
+            .replace(/\n/g, '<br>')
+            .replace(/\s/g, '&nbsp;')
+          } catch (error) {
+            return 'Unable to stringify object';
+          }
+        } else {
+          return String(arg);
+        }
+      }).join(' '); // 引数をスペースで区切って結合
+    oldConsoleLog.apply(console, msg);
     const outputElement = document.getElementById('output');
-    outputElement.innerHTML += msg + '<br>';
+    outputElement.innerHTML += msgStr + '<br>';
     outputElement.scrollTop = outputElement.scrollHeight;
 };
 
@@ -28,7 +42,9 @@ const onMIDIMessage = (message) => {
 }
 
 const onMIDIConnectionChange = (event) => {
-    console.log("MIDI connection event:", event);
+    if (event.port.type !== "input") return;
+    const name = event.port.name?? null;
+    console.log("MIDI device:", name);
 }
 
 if (navigator.requestMIDIAccess) {
