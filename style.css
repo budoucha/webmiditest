@@ -1,0 +1,6 @@
+div#output {
+    height:80vh;
+    overflow-y: scroll;
+    background-color: #000b;
+    color: white;
+}
