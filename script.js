@@ -1,7 +1,6 @@
 // override console.log
 const oldConsoleLog = console.log;
 console.log = (...msg) => {
-    // const msgStr = msg.join(' ');
     const msgStr = msg.map(arg => {
         if (typeof arg === 'object') {
           try {
@@ -14,7 +13,7 @@ console.log = (...msg) => {
         } else {
           return String(arg);
         }
-      }).join(' '); // 引数をスペースで区切って結合
+      }).join(' ');
     oldConsoleLog.apply(console, msg);
     const outputElement = document.getElementById('output');
     outputElement.innerHTML += msgStr + '<br>';
