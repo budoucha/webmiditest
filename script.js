@@ -1,5 +1,11 @@
-// not used yet
-const outputElement = document.getElementById('output');
+// override console.log
+const oldConsoleLog = console.log;
+console.log = (msg) => {
+    oldConsoleLog(msg);
+    const outputElement = document.getElementById('output');
+    outputElement.innerHTML += msg + '<br>';
+    outputElement.scrollTop = outputElement.scrollHeight;
+};
 
 const onMIDISuccess = (midiAccess) => {
     const inputs = midiAccess.inputs.values();
