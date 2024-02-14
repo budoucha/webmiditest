@@ -46,10 +46,9 @@ const onMIDIFailure = () => {
 }
 
 const outputRich = (data) => {
-    const status = data[0] && 0xF0;
-    const channel = data[0] && 0x0F;
+    const status = data[0] & 0xF0;
+    const channel = data[0] & 0x0F;
     if (status == 0x80) { // 128-143 Note Off
-        console.log(status);
         if (channel == 9) { // 137 pad release
             const pad = data[1];
             console.log(`released pad: ${pad}`);
