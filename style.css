@@ -5,3 +5,11 @@ div#output {
     color: white;
     font-size: small;
 }
+
+#axisConfig {
+    position: fixed;
+    right: 1em;
+    top: 1lh;
+    background: #3348;
+    padding: 0.5lh 1em;
+}

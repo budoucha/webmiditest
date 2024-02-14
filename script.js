@@ -29,6 +29,8 @@ console.log = (...args) => {
 const modeSwitch = document.getElementById('richMode');
 modeSwitch.addEventListener('change', (event) => {
     richMode = event.target.checked;
+    const axisConfig = document.getElementById('axisConfig');
+    axisConfig.style.display = richMode ? 'block' : 'none';
 });
 let richMode = modeSwitch.checked;
 
