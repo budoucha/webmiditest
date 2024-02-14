@@ -46,21 +46,28 @@ const onMIDIFailure = () => {
 }
 
 const outputRich = (data) => {
-    // pitch bend
-    if (data[0] == 224) {
-        const pitch = (data[2] << 7) + data[1];
-        console.log(`pitch: ${pitch}`);
+    const status = data[0] && 0xF0;
+    const channel = data[0] && 0x0F;
+    if (status == 0x80) { // 128-143 Note Off
+        console.log(status);
+        if (channel == 9) { // 137 pad release
+            const pad = data[1];
+            console.log(`released pad: ${pad}`);
+            return;
+        }
+        const note = data[1];
+        const octave = Math.floor(note / 12) - 1;
+        const noteName = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'][note % 12];
+        console.log(`released ${note}(${noteName}${octave})`);
         return;
     }
-    // control change
-    if (data[0] == 176) { // 0xB0, 0xB* control change
-        const control = data[1];
-        const value = data[2];
-        console.log(`control: ${control},\tvalue: ${value}`);
-        return;
-    }
-    // key press
-    if (data[0] == 144) { // 0x90, 0x9* note on
+    if (status == 0x90) { // 144-159 Note On
+        if (channel == 9) { // 153 pad press
+            const pad = data[1];
+            const velocity = (data.length > 2) ? data[2] : 0;
+            console.log(`pad: ${pad},\tvelocity: ${velocity}`);
+            return;
+        }
         const note = data[1];
         const octave = Math.floor(note / 12) - 1;
         const noteName = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'][note % 12];
@@ -68,43 +75,29 @@ const outputRich = (data) => {
         console.log(`${note}(${noteName}${octave}),\tvelocity: ${velocity}`);
         return;
     }
-    // key release
-    if (data[0] == 128) { // 0x80, 0x8* note off
-        const note = data[1];
-        const octave = Math.floor(note / 12) - 1;
-        const noteName = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'][note % 12];
-        console.log(`released ${note}(${noteName}${octave})`);
-        return;
-    }
-    // pad press
-    if (data[0] == 153) { // 0x99, 0x9* note on
-        const pad = data[1];
-        const velocity = (data.length > 2) ? data[2] : 0;
-        console.log(`pad: ${pad},\tvelocity: ${velocity}`);
-        return;
-    }
-    // pad release
-    if (data[0] == 137) { // 0x89, 0x8* note off
-        const pad = data[1];
-        console.log(`released pad: ${pad}`);
-        return;
-    }
-    // pad velocity change?
-    if (data[0] == 217) { // 0xD9 0xD* pad velocity change?
-        const velocity = data[1];
-        console.log(`pad velocity: ${velocity}`);
-        return;
-    }
-    if (data[0] == 185) { // 0xB9 0xB* Control change
+    if (status == 0xB0) { // 176-191 Control Change
         const control = data[1];
         const value = data[2];
         console.log(`control: ${control},\tvalue: ${value}`);
         return;
     }
-    // program change
-    if (data[0] == 201) { // 0xC9 0xC* program change
+    if (status == 0xC0) { // 192-207 Program Change
         const program = data[1];
         console.log(`program: ${program}`);
+        return;
+    }
+    if (status == 0xD0) { // 208-223 channel pressure
+        const velocity = data[1];
+        if (channel == 0x9) { // 217 pad aftertouch
+            console.log(`pad velocity: ${velocity}`);
+            return;
+        }
+        console.log(`pad velocity: ${velocity}`);
+        return;
+    }
+    if (status == 0xE0) {// 224-239 pitch bend 
+        const pitch = (data[2] << 7) + data[1];
+        console.log(`pitch: ${pitch}`);
         return;
     }
     // other
