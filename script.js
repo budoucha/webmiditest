@@ -53,14 +53,14 @@ const outputRich = (data) => {
         return;
     }
     // control change
-    if (data[0] == 176) {
+    if (data[0] == 176) { // 0xB0, 0xB* control change
         const control = data[1];
         const value = data[2];
         console.log(`control: ${control},\tvalue: ${value}`);
         return;
     }
     // key press
-    if (data[0] == 144) {
+    if (data[0] == 144) { // 0x90, 0x9* note on
         const note = data[1];
         const octave = Math.floor(note / 12) - 1;
         const noteName = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'][note % 12];
@@ -69,7 +69,7 @@ const outputRich = (data) => {
         return;
     }
     // key release
-    if (data[0] == 128) {
+    if (data[0] == 128) { // 0x80, 0x8* note off
         const note = data[1];
         const octave = Math.floor(note / 12) - 1;
         const noteName = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'][note % 12];
@@ -77,20 +77,20 @@ const outputRich = (data) => {
         return;
     }
     // pad press
-    if (data[0] == 153) {
+    if (data[0] == 153) { // 0x99, 0x9* note on
         const pad = data[1];
         const velocity = (data.length > 2) ? data[2] : 0;
         console.log(`pad: ${pad},\tvelocity: ${velocity}`);
         return;
     }
     // pad release
-    if (data[0] == 137) {
+    if (data[0] == 137) { // 0x89, 0x8* note off
         const pad = data[1];
         console.log(`released pad: ${pad}`);
         return;
     }
     // pad velocity change?
-    if (data[0] == 217) {
+    if (data[0] == 217) { // 0xD9 0xD* pad velocity change?
         const velocity = data[1];
         console.log(`pad velocity: ${velocity}`);
         return;
