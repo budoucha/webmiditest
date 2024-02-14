@@ -95,6 +95,12 @@ const outputRich = (data) => {
         console.log(`pad velocity: ${velocity}`);
         return;
     }
+    // program change
+    if (data[0] == 201) { // 0xC9 0xC* program change
+        const program = data[1];
+        console.log(`program: ${program}`);
+        return;
+    }
     // other
     console.log(...data);
 }
