@@ -34,6 +34,74 @@ modeSwitch.addEventListener('change', (event) => {
 });
 let richMode = modeSwitch.checked;
 
+const axisX = {
+    assigned: null
+};
+const axisY = {
+    assigned: null
+};
+
+const inputQueue = { // 最新10入力を保持
+    maxLength: 10,
+    queue: [],
+    push: (value) => {
+        inputQueue.queue.push(value);
+        if (inputQueue.queue.length > inputQueue.maxLength) {
+            inputQueue.queue.shift();
+        }
+    },
+    getMode: () => { // 最頻値を取得
+        const mode = inputQueue.queue.reduce((acc, cur) => {
+            // indexで使う関係上配列は文字に変換される
+            if (acc[cur]) {
+                acc[cur]++;
+            } else {
+                acc[cur] = 1;
+            }
+            return acc;
+        }, {});
+        const max = Math.max(...Object.values(mode));
+        return Object.keys(mode).find(key => mode[key] === max);
+    },
+    reset: () => {
+        inputQueue.queue = [];
+    }
+};
+
+buttonX = document.querySelector('#axisConfig > #assignX > button');
+buttonY = document.querySelector('#axisConfig > #assignY > button');
+buttonX.addEventListener('mousedown', () => {
+    inputQueue.reset();
+    console.log('tilt the joystick to the right');
+});
+buttonX.addEventListener('mouseup', () => {
+    const mode = inputQueue.getMode().split(","); // 文字列から配列を復元する
+    // ピッチベンドの場合第一値のみで判定、それ以外は両方で判定
+    axisX.assigned = mode[0] >= 0xE0 ? mode[0] : mode;
+
+    if (axisX.assigned) {
+        console.log(`axis X is assigned to: ${axisX.assigned}`);
+        document.querySelector('#axisConfig > #assignX > span.value').textContent = axisX.assigned;
+    } else {
+        console.log('axis X is not assigned');
+    }
+});
+buttonY.addEventListener('mousedown', () => {
+    inputQueue.reset();
+    console.log('tilt the joystick to the top');
+});
+buttonY.addEventListener('mouseup', () => {
+    const mode = inputQueue.getMode().split(","); // 文字列から配列を復元する
+    // ピッチベンドの場合第一値のみで判定、それ以外は両方で判定
+    axisY.assigned = mode[0] >= 0xE0 ? mode[0] : mode;
+
+    if (axisY.assigned) {
+        console.log(`axis Y is assigned to: ${axisY.assigned}`);
+        document.querySelector('#axisConfig > #assignY > span.value').textContent = axisY.assigned;
+    } else {
+        console.log('axis Y is not assigned');
+    }
+});
 
 const onMIDISuccess = (midiAccess) => {
     const inputs = midiAccess.inputs.values();
@@ -107,6 +175,7 @@ const outputRich = (data) => {
 
 const onMIDIMessage = (message) => {
     const data = message.data;
+    inputQueue.push([data[0], data[1]]);
     if (richMode) {
         outputRich(data);
         return;
