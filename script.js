@@ -32,7 +32,7 @@ modeSwitch.addEventListener('change', (event) => {
     const axisConfig = document.getElementById('axisConfig');
     axisConfig.style.display = richMode ? 'block' : 'none';
 });
-let richMode = modeSwitch.checked;
+dispatchEvent(new Event('change')); // 初期値反映
 
 const axisX = {
     assigned: null
