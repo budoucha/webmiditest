@@ -69,10 +69,10 @@ const inputQueue = { // 最新10入力を保持
 };
 
 const axisConfigs = [
-    { axis: axisX, assignTo: 0, buttonId: "assignXplus", direction: "right", label: "X+" },
-    { axis: axisX, assignTo: 1, buttonId: "assignXminus", direction: "left", label: "X-" },
-    { axis: axisY, assignTo: 0, buttonId: "assignYplus", direction: "up", label: "Y+" },
-    { axis: axisY, assignTo: 1, buttonId: "assignYminus", direction: "down", label: "Y-" },
+    { axis: axisX, assignTo: 1, buttonId: "assignXplus", direction: "right", label: "X+" },
+    { axis: axisX, assignTo: 0, buttonId: "assignXminus", direction: "left", label: "X-" },
+    { axis: axisY, assignTo: 1, buttonId: "assignYplus", direction: "up", label: "Y+" },
+    { axis: axisY, assignTo: 0, buttonId: "assignYminus", direction: "down", label: "Y-" },
 ]
 
 axisConfigs.forEach(config => {
