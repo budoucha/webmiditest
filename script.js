@@ -96,6 +96,10 @@ axisConfigs.forEach(config => {
         const assignTo = config.assignTo;
         const axis = config.axis;
         axis.assign[assignTo] = assigned;
+        // 正負のもう一方が未設定の場合はデフォルト挙動として同じ値を設定
+        if (axis.assign[1 - assignTo] === null) {
+            axis.assign[1 - assignTo] = assigned;
+        }
 
         const ranges = {
             pitch: [ // isSame? 0: 異なる, 1: 両方同じ
@@ -116,9 +120,9 @@ axisConfigs.forEach(config => {
 
         if (axis.assign[assignTo]) {
             console.log(`axis ${config.label} is assigned to: ${axis.assign[assignTo]}`);
-            document.querySelector(`#axisConfig > #${config.buttonId} span.value.stick`).textContent = assigned;
-            // rangeに関しては正負双方に影響を及ぼすた両方同時に更新
-            document.querySelector(`#axisConfig > .${axis.name}.plus span.value.range`).textContent = `${axis.range[1][0]} ~ ${axis.range[1][1]}`;
+            document.querySelector(`#axisConfig > .${axis.name}.plus span.value.stick`).textContent = axis.assign[0];
+            document.querySelector(`#axisConfig > .${axis.name}.minus  span.value.stick`).textContent = axis.assign[1];
+            document.querySelector(`#axisConfig > .${axis.name}.plus  span.value.range`).textContent = `${axis.range[1][0]} ~ ${axis.range[1][1]}`;
             document.querySelector(`#axisConfig > .${axis.name}.minus span.value.range`).textContent = `${axis.range[0][0]} ~ ${axis.range[0][1]}`;
         } else {
             console.log(`axis ${config.label} is not assigned`);
