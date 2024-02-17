@@ -79,10 +79,10 @@ const initAxis = axis => {
 }
 const updateAxisTexts = (axis) => {
     if (axis.type !== "axis") return;
-        document.querySelector(`#axisConfig > .${axis.name}.minus  span.value.stick`).textContent = axis.assign[0];
-        document.querySelector(`#axisConfig > .${axis.name}.plus span.value.stick`).textContent = axis.assign[1];
-        document.querySelector(`#axisConfig > .${axis.name}.minus span.value.range`).textContent = `${axis.range[0][0]} ~ ${axis.range[0][1]}`;
-        document.querySelector(`#axisConfig > .${axis.name}.plus  span.value.range`).textContent = `${axis.range[1][0]} ~ ${axis.range[1][1]}`;
+    document.querySelector(`#axisConfig > .${axis.name}.minus  span.value.stick`).textContent = axis.assign[0];
+    document.querySelector(`#axisConfig > .${axis.name}.plus span.value.stick`).textContent = axis.assign[1];
+    document.querySelector(`#axisConfig > .${axis.name}.minus span.value.range`).textContent = `${axis.range[0][0]} ~ ${axis.range[0][1]}`;
+    document.querySelector(`#axisConfig > .${axis.name}.plus  span.value.range`).textContent = `${axis.range[1][0]} ~ ${axis.range[1][1]}`;
 }
 const clearButton = document.querySelector('#axisConfig button.clear');
 clearButton.addEventListener('click', () => {
