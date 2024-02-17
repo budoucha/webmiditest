@@ -99,7 +99,7 @@ axisConfigs.forEach(config => {
         axis.range[assignTo] = range;
         axis.default[assignTo] = assignMode === 'pitch' ? [8192] : [64];
         //+-が設定済み、かつ異なる入力が設定されていた場合、defaultの値を0にする
-        if (axis.every(e => e !== null) && axis.assigned[0] !== axis.assigned[1]) {
+        if (axis.assigned.every(e => e !== null) && axis.assigned[0] !== axis.assigned[1]) {
             axis.default = [0, 0];
         }
         if (axis.assigned[assignTo]) {
