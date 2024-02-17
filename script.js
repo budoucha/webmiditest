@@ -72,6 +72,7 @@ const axisY = {
 };
 const initAxis = axis => {
     if (axis.type !== "axis") return;
+    axis.assignMode = [null, null];
     axis.assign = [null, null];
     axis.range = [[null, null], [null, null]];
     axis.default = [null, null];
@@ -112,26 +113,38 @@ axisConfigs.forEach(config => {
         const assigned = { pitch: mode[0], default: mode }[assignMode];
         const assignTo = config.assignTo;
         const axis = config.axis;
+        axis.assignMode[assignTo] = assignMode;
         axis.assign[assignTo] = assigned;
         // 正負のもう一方が未設定の場合はデフォルト挙動として同じ値を設定
         if (axis.assign[1 - assignTo] === null) {
+            axis.assignMode[1-assignTo] = assignMode;
             axis.assign[1 - assignTo] = assigned;
         }
 
         const ranges = {
             pitch: [ // isSame? 0: 異なる, 1: 両方同じ
-                [[8192, 0], [8192, 16383]],
-                [[8192, 0], [8192, 16383]] // pitch bendが片方でしか設定されていない場合の事は考慮しない
+                [[0,16383], [0, 16383]], // 実際には発生しないと思う
+                [[8192, 0], [8192, 16383]]
             ],
             default: [ // isSame? 0: 異なる, 1: 両方同じ
                 [[0, 127], [0, 127]],
                 [[64, 0], [64, 127]]
             ]
         };
-        const isSame = JSON.stringify(axis.assign[0]) === JSON.stringify(axis.assign[1]);
-        const range = ranges[assignMode][{ false: 0, true: 1 }[isSame]];
+        const same = { false: 0, true: 1 }[JSON.stringify(axis.assign[0]) === JSON.stringify(axis.assign[1])];
+        const range = ranges[assignMode][same];
+        axis.range[assignTo] = range[assignTo];
 
-        axis.range = range;
+        // 正負のもう一方が未設定の場合は対応するデフォルト値を設定
+        if (axis.range[1 - assignTo][0] === null) {
+            axis.range[1 - assignTo] = range[1 - assignTo];
+        }
+        else {
+            // 正負のもう一方が設定されている場合、isSameおよびassignModeに基づいて対応する範囲を設定
+            const theOtherAssignMode = axis.assignMode[1 - assignTo];
+            axis.range[1 - assignTo] = ranges[theOtherAssignMode][same][1 - assignTo];
+        }
+
         axis.default = [range[0][0], range[1][0]];
 
         if (axis.assign[assignTo]) {
