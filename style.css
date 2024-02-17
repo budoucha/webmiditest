@@ -60,6 +60,10 @@ canvas {
     height: 2.5lh;
 }
 
+.hidden {
+    display: none;
+}
+
 h1 {
     margin: 0;
     padding: 0;
