@@ -35,10 +35,14 @@ modeSwitch.addEventListener('change', (event) => {
 dispatchEvent(new Event('change')); // 初期値反映
 
 const axisX = {
-    assigned: [null, null]
+    assigned: [null, null],
+    range: [[null, null], [null, null]],
+    default: null
 };
 const axisY = {
-    assigned: [null, null]
+    assigned: [null, null],
+    range: [[null, null], [null, null]],
+    default: null
 };
 
 const inputQueue = { // 最新10入力を保持
@@ -82,13 +86,18 @@ axisConfigs.forEach(config => {
         console.log(`tilt the joystick ${config.direction}`);
     });
     button.addEventListener('mouseup', () => {
-        const mode = inputQueue.getMode().split(","); // 文字列から配列を復元する
+        const mode = inputQueue.getMode().split(","); // 最頻値、文字列から配列を復元する
         // ピッチベンドの場合第一値のみで判定、それ以外は両方で判定
-        const assigned = mode[0] >= 0xE0 ? mode[0] : mode;
+        const assignMode = mode[0] >= 0xE0 ? 'pitch' : 'default';
+        const assigned = { pitch: mode[0], default: mode }[assignMode];
         const assignTo = config.assignTo;
         const axis = config.axis;
         axis.assigned[assignTo] = assigned;
 
+        const range = assignMode === 'pitch' ? [0, 16383] : [0, 127];
+        axis.range[assignTo] = range;
+        axis.default = assignMode === 'pitch' ? [8192] : [64];
+        //todo: +-で異なる軸が設定されていた場合、defaultの値を0にする
         if (axis.assigned[assignTo]) {
             console.log(`axis ${config.label} is assigned to: ${axis.assigned[assignTo]}`);
             document.querySelector(`#axisConfig > #${config.buttonId} > span.value`).textContent = axis.assigned[assignTo];
