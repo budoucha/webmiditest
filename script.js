@@ -73,66 +73,66 @@ const buttonXmin = document.querySelector('#axisConfig > #assignXmin > button');
 const buttonYmax = document.querySelector('#axisConfig > #assignYmax > button');
 const buttonYmin = document.querySelector('#axisConfig > #assignYmin > button');
 
-buttonXmax.addEventListener('mousedown', () => {
+buttonXplus.addEventListener('mousedown', () => {
     inputQueue.reset();
     console.log('tilt the joystick right');
 });
-buttonXmax.addEventListener('mouseup', () => {
+buttonXplus.addEventListener('mouseup', () => {
     const mode = inputQueue.getMode().split(","); // 文字列から配列を復元する
     // ピッチベンドの場合第一値のみで判定、それ以外は両方で判定
     axisX.assigned[0] = mode[0] >= 0xE0 ? mode[0] : mode;
 
     if (axisX.assigned[0]) {
         console.log(`axis X+ is assigned to: ${axisX.assigned[0]}`);
-        document.querySelector('#axisConfig > #assignXmax > span.value').textContent = axisX.assigned[0];
+        document.querySelector('#axisConfig > #assignXplus > span.value').textContent = axisX.assigned[0];
     } else {
         console.log('axis X+ is not assigned');
     }
 });
-buttonXmin.addEventListener('mousedown', () => {
+buttonXminus.addEventListener('mousedown', () => {
     inputQueue.reset();
     console.log('tilt the joystick left');
 });
-buttonXmin.addEventListener('mouseup', () => {
+buttonXminus.addEventListener('mouseup', () => {
     const mode = inputQueue.getMode().split(","); // 文字列から配列を復元する
     // ピッチベンドの場合第一値のみで判定、それ以外は両方で判定
     axisX.assigned[1] = mode[0] >= 0xE0 ? mode[0] : mode;
 
     if (axisX.assigned[1]) {
         console.log(`axis X- is assigned to: ${axisX.assigned[1]}`);
-        document.querySelector('#axisConfig > #assignXmin > span.value').textContent = axisX.assigned[1];
+        document.querySelector('#axisConfig > #assignXminus > span.value').textContent = axisX.assigned[1];
     } else {
         console.log('axis X- is not assigned');
     }
 });
-buttonYmax.addEventListener('mousedown', () => {
+buttonYplus.addEventListener('mousedown', () => {
     inputQueue.reset();
     console.log('tilt the joystick up');
 });
-buttonYmax.addEventListener('mouseup', () => {
+buttonYplus.addEventListener('mouseup', () => {
     const mode = inputQueue.getMode().split(","); // 文字列から配列を復元する
     // ピッチベンドの場合第一値のみで判定、それ以外は両方で判定
     axisY.assigned[0] = mode[0] >= 0xE0 ? mode[0] : mode;
 
     if (axisY.assigned[0]) {
         console.log(`axis Y+ is assigned to: ${axisY.assigned[0]}`);
-        document.querySelector('#axisConfig > #assignYmax > span.value').textContent = axisY.assigned[0];
+        document.querySelector('#axisConfig > #assignYplus > span.value').textContent = axisY.assigned[0];
     } else {
         console.log('axis Y+ is not assigned');
     }
 });
-buttonYmin.addEventListener('mousedown', () => {
+buttonYminus.addEventListener('mousedown', () => {
     inputQueue.reset();
     console.log('tilt the joystick down');
 });
-buttonYmin.addEventListener('mouseup', () => {
+buttonYminus.addEventListener('mouseup', () => {
     const mode = inputQueue.getMode().split(","); // 文字列から配列を復元する
     // ピッチベンドの場合第一値のみで判定、それ以外は両方で判定
     axisY.assigned[1] = mode[0] >= 0xE0 ? mode[0] : mode;
 
     if (axisY.assigned[1]) {
         console.log(`axis Y- is assigned to: ${axisY.assigned[1]}`);
-        document.querySelector('#axisConfig > #assignYmin > span.value').textContent = axisY.assigned[1];
+        document.querySelector('#axisConfig > #assignYminus > span.value').textContent = axisY.assigned[1];
     } else {
         console.log('axis Y- is not assigned');
     }
