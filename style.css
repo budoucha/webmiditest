@@ -17,7 +17,7 @@ div#output {
 
 #axisConfig .axisConfig {
     display: grid;
-    grid-template-columns: 1.5em 7.2em 8.4em;
+    grid-template-columns: 2em 7em 7em;
     place-items: center;
 }
 
@@ -29,10 +29,11 @@ div#output {
 .axisConfig p {
     margin: 0.15lh 0;
     line-height: 1.2;
+    text-align: center;
 }
 
 #axisConfig button {
     justify-self: end;
-    width: 10em;
+    width: 8em;
     height: 2.5lh;
 }
