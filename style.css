@@ -25,6 +25,18 @@ canvas {
     padding: 0.5lh 1em;
 }
 
+#axisConfig header {
+    display: flex;
+    justify-content: space-around;
+    justify-items: end;
+}
+
+#axisConfig h3 {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
 #axisConfig .axisConfig {
     display: grid;
     grid-template-columns: 2em 9em 7em;
@@ -42,7 +54,7 @@ canvas {
     text-align: center;
 }
 
-#axisConfig button {
+.axisConfig button {
     justify-self: end;
     width: 8em;
     height: 2.5lh;
@@ -52,3 +64,4 @@ h1 {
     margin: 0;
     padding: 0;
 }
+

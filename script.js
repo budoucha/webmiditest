@@ -32,7 +32,7 @@ modeSwitch.addEventListener('change', (event) => {
     const axisConfig = document.getElementById('axisConfig');
     axisConfig.style.display = richMode ? 'block' : 'none';
 });
-dispatchEvent(new Event('change')); // 初期値反映
+modeSwitch.dispatchEvent(new Event('change')); // 初期値反映
 
 
 const inputQueue = { // 最新10入力を保持
@@ -63,17 +63,34 @@ const inputQueue = { // 最新10入力を保持
 };
 
 const axisX = {
+    type: "axis",
     name: "axisX",
-    assign: [null, null],
-    range: [[null, null], [null, null]],
-    default: [null, null]
 };
 const axisY = {
+    type: "axis",
     name: "axisY",
-    assign: [null, null],
-    range: [[null, null], [null, null]],
-    default: [null, null]
 };
+const initAxis = axis => {
+    if (axis.type !== "axis") return;
+    axis.assign = [null, null];
+    axis.range = [[null, null], [null, null]];
+    axis.default = [null, null];
+    updateAxisTexts(axis);
+}
+const updateAxisTexts = (axis) => {
+    if (axis.type !== "axis") return;
+        document.querySelector(`#axisConfig > .${axis.name}.plus span.value.stick`).textContent = axis.assign[0];
+        document.querySelector(`#axisConfig > .${axis.name}.minus  span.value.stick`).textContent = axis.assign[1];
+        document.querySelector(`#axisConfig > .${axis.name}.plus  span.value.range`).textContent = `${axis.range[1][0]} ~ ${axis.range[1][1]}`;
+        document.querySelector(`#axisConfig > .${axis.name}.minus span.value.range`).textContent = `${axis.range[0][0]} ~ ${axis.range[0][1]}`;
+}
+const clearButton = document.querySelector('#axisConfig button.clear');
+clearButton.addEventListener('click', () => {
+    initAxis(axisX);
+    initAxis(axisY);
+});
+clearButton.dispatchEvent(new Event('click')); // 初期化
+
 
 const axisConfigs = [
     { axis: axisX, assignTo: 1, buttonId: "assignXplus", direction: "right", label: "X+" },
@@ -114,22 +131,17 @@ axisConfigs.forEach(config => {
         const isSame = JSON.stringify(axis.assign[0]) === JSON.stringify(axis.assign[1]);
         const range = ranges[assignMode][{ false: 0, true: 1 }[isSame]];
 
-        console.log(range)
         axis.range = range;
         axis.default = [range[0][0], range[1][0]];
 
         if (axis.assign[assignTo]) {
             console.log(`axis ${config.label} is assigned to: ${axis.assign[assignTo]}`);
-            document.querySelector(`#axisConfig > .${axis.name}.plus span.value.stick`).textContent = axis.assign[0];
-            document.querySelector(`#axisConfig > .${axis.name}.minus  span.value.stick`).textContent = axis.assign[1];
-            document.querySelector(`#axisConfig > .${axis.name}.plus  span.value.range`).textContent = `${axis.range[1][0]} ~ ${axis.range[1][1]}`;
-            document.querySelector(`#axisConfig > .${axis.name}.minus span.value.range`).textContent = `${axis.range[0][0]} ~ ${axis.range[0][1]}`;
+            updateAxisTexts(axis);
         } else {
             console.log(`axis ${config.label} is not assigned`);
         }
     });
 });
-
 
 const onMIDISuccess = (midiAccess) => {
     const inputs = midiAccess.inputs.values();
