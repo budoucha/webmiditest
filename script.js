@@ -68,10 +68,10 @@ const inputQueue = { // 最新10入力を保持
     }
 };
 
-const buttonXmax = document.querySelector('#axisConfig > #assignXmax > button');
-const buttonXmin = document.querySelector('#axisConfig > #assignXmin > button');
-const buttonYmax = document.querySelector('#axisConfig > #assignYmax > button');
-const buttonYmin = document.querySelector('#axisConfig > #assignYmin > button');
+const buttonXplus = document.querySelector('#axisConfig > #assignXplus > button');
+const buttonXminus = document.querySelector('#axisConfig > #assignXminus > button');
+const buttonYplus = document.querySelector('#axisConfig > #assignYplus > button');
+const buttonYminus = document.querySelector('#axisConfig > #assignYminus > button');
 
 buttonXplus.addEventListener('mousedown', () => {
     inputQueue.reset();
