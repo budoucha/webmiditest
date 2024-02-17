@@ -68,75 +68,36 @@ const inputQueue = { // 最新10入力を保持
     }
 };
 
-const buttonXplus = document.querySelector('#axisConfig > #assignXplus > button');
-const buttonXminus = document.querySelector('#axisConfig > #assignXminus > button');
-const buttonYplus = document.querySelector('#axisConfig > #assignYplus > button');
-const buttonYminus = document.querySelector('#axisConfig > #assignYminus > button');
+const axisConfigs = [
+    { axis: axisX, assignTo: 0, buttonId: "assignXplus", direction: "right", label: "X+" },
+    { axis: axisX, assignTo: 1, buttonId: "assignXminus", direction: "left", label: "X-" },
+    { axis: axisY, assignTo: 0, buttonId: "assignYplus", direction: "up", label: "Y+" },
+    { axis: axisY, assignTo: 1, buttonId: "assignYminus", direction: "down", label: "Y-" },
+]
 
-buttonXplus.addEventListener('mousedown', () => {
-    inputQueue.reset();
-    console.log('tilt the joystick right');
-});
-buttonXplus.addEventListener('mouseup', () => {
-    const mode = inputQueue.getMode().split(","); // 文字列から配列を復元する
-    // ピッチベンドの場合第一値のみで判定、それ以外は両方で判定
-    axisX.assigned[0] = mode[0] >= 0xE0 ? mode[0] : mode;
+axisConfigs.forEach(config => {
+    const button = document.querySelector(`#axisConfig > #${config.buttonId} > button`);
+    button.addEventListener('mousedown', () => {
+        inputQueue.reset();
+        console.log(`tilt the joystick ${config.direction}`);
+    });
+    button.addEventListener('mouseup', () => {
+        const mode = inputQueue.getMode().split(","); // 文字列から配列を復元する
+        // ピッチベンドの場合第一値のみで判定、それ以外は両方で判定
+        const assigned = mode[0] >= 0xE0 ? mode[0] : mode;
+        const assignTo = config.assignTo;
+        const axis = config.axis;
+        axis.assigned[assignTo] = assigned;
 
-    if (axisX.assigned[0]) {
-        console.log(`axis X+ is assigned to: ${axisX.assigned[0]}`);
-        document.querySelector('#axisConfig > #assignXplus > span.value').textContent = axisX.assigned[0];
-    } else {
-        console.log('axis X+ is not assigned');
-    }
+        if (axis.assigned[assignTo]) {
+            console.log(`axis ${config.label} is assigned to: ${axis.assigned[assignTo]}`);
+            document.querySelector(`#axisConfig > #${config.buttonId} > span.value`).textContent = axis.assigned[assignTo];
+        } else {
+            console.log(`axis ${config.label} is not assigned`);
+        }
+    });
 });
-buttonXminus.addEventListener('mousedown', () => {
-    inputQueue.reset();
-    console.log('tilt the joystick left');
-});
-buttonXminus.addEventListener('mouseup', () => {
-    const mode = inputQueue.getMode().split(","); // 文字列から配列を復元する
-    // ピッチベンドの場合第一値のみで判定、それ以外は両方で判定
-    axisX.assigned[1] = mode[0] >= 0xE0 ? mode[0] : mode;
 
-    if (axisX.assigned[1]) {
-        console.log(`axis X- is assigned to: ${axisX.assigned[1]}`);
-        document.querySelector('#axisConfig > #assignXminus > span.value').textContent = axisX.assigned[1];
-    } else {
-        console.log('axis X- is not assigned');
-    }
-});
-buttonYplus.addEventListener('mousedown', () => {
-    inputQueue.reset();
-    console.log('tilt the joystick up');
-});
-buttonYplus.addEventListener('mouseup', () => {
-    const mode = inputQueue.getMode().split(","); // 文字列から配列を復元する
-    // ピッチベンドの場合第一値のみで判定、それ以外は両方で判定
-    axisY.assigned[0] = mode[0] >= 0xE0 ? mode[0] : mode;
-
-    if (axisY.assigned[0]) {
-        console.log(`axis Y+ is assigned to: ${axisY.assigned[0]}`);
-        document.querySelector('#axisConfig > #assignYplus > span.value').textContent = axisY.assigned[0];
-    } else {
-        console.log('axis Y+ is not assigned');
-    }
-});
-buttonYminus.addEventListener('mousedown', () => {
-    inputQueue.reset();
-    console.log('tilt the joystick down');
-});
-buttonYminus.addEventListener('mouseup', () => {
-    const mode = inputQueue.getMode().split(","); // 文字列から配列を復元する
-    // ピッチベンドの場合第一値のみで判定、それ以外は両方で判定
-    axisY.assigned[1] = mode[0] >= 0xE0 ? mode[0] : mode;
-
-    if (axisY.assigned[1]) {
-        console.log(`axis Y- is assigned to: ${axisY.assigned[1]}`);
-        document.querySelector('#axisConfig > #assignYminus > span.value').textContent = axisY.assigned[1];
-    } else {
-        console.log('axis Y- is not assigned');
-    }
-});
 
 const onMIDISuccess = (midiAccess) => {
     const inputs = midiAccess.inputs.values();
