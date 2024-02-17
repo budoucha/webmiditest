@@ -63,11 +63,13 @@ const inputQueue = { // 最新10入力を保持
 };
 
 const axisX = {
+    name: "axisX",
     assigned: [null, null],
     range: [[null, null], [null, null]],
     default: [null, null]
 };
 const axisY = {
+    name: "axisY",
     assigned: [null, null],
     range: [[null, null], [null, null]],
     default: [null, null]
@@ -96,30 +98,28 @@ axisConfigs.forEach(config => {
         axis.assigned[assignTo] = assigned;
 
         const ranges = {
-            pitch: [[8192, 0], [8192, 16383]],
-            default: [[0, 64], [64, 127]]
+            pitch: [ // isSame? 0: 異なる, 1: 両方同じ
+                [[8192, 0], [8192, 16383]],
+                [[8192, 0], [8192, 16383]] // pitch bendが片方でしか設定されていない場合の事は考慮しない
+            ],
+            default: [ // isSame? 0: 異なる, 1: 両方同じ
+                [[0, 127], [0, 127]],
+                [[64, 0], [64, 127]]
+            ]
         };
-        const range = ranges[assignMode];
+        const isSame = JSON.stringify(axis.assigned[0]) === JSON.stringify(axis.assigned[1]);
+        const range = ranges[assignMode][{ false: 0, true: 1 }[isSame]];
+
+        console.log(range)
         axis.range = range;
-        axis.default[assignTo] = assignMode === 'pitch' ? [8192] : [64];
-        //+-が設定済み、かつ異なる入力が設定されていた場合、rangeを調整しdefaultの値を0にする
-        if (axis.assigned.every(e => e !== null)) {
-            if (assignMode === 'default') {
-                if (axis.assigned[0] !== axis.assigned[1]) {
-                    axis.range = [[0, 127], [0, 127]];
-                    axis.default = [0, 0];
-                }
-                else if (axis.assigned[0] === axis.assigned[1]) {
-                    axis.range = [[0, 127], [0, 127]];
-                    axis.default = [0, 0];
-                }
-            }
-            //pitch bendが片方でしか設定されていない場合の事は考慮しない
-        }
+        axis.default = [range[0][0], range[1][0]];
+
         if (axis.assigned[assignTo]) {
             console.log(`axis ${config.label} is assigned to: ${axis.assigned[assignTo]}`);
             document.querySelector(`#axisConfig > #${config.buttonId} span.value.stick`).textContent = assigned;
-            document.querySelector(`#axisConfig > #${config.buttonId} span.value.range`).textContent = range;
+            // rangeに関しては正負双方に影響を及ぼすた両方同時に更新
+            document.querySelector(`#axisConfig > .${axis.name}.plus span.value.range`).textContent = `${axis.range[1][0]} ~ ${axis.range[1][1]}`;
+            document.querySelector(`#axisConfig > .${axis.name}.minus span.value.range`).textContent = `${axis.range[0][0]} ~ ${axis.range[0][1]}`;
         } else {
             console.log(`axis ${config.label} is not assigned`);
         }

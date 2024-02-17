@@ -17,7 +17,7 @@ div#output {
 
 #axisConfig .axisConfig {
     display: grid;
-    grid-template-columns: 2em 7em 7em;
+    grid-template-columns: 2em 9em 7em;
     place-items: center;
 }
 
