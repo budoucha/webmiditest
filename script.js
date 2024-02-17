@@ -73,7 +73,7 @@ const axisY = {
 const initAxis = axis => {
     if (axis.type !== "axis") return;
     axis.assignMode = [null, null];
-    axis.assign = [null, null];
+    axis.assign = [[null], [null]];
     axis.range = [[null, null], [null, null]];
     axis.default = [null, null];
     updateAxisTexts(axis);
