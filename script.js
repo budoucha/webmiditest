@@ -95,12 +95,26 @@ axisConfigs.forEach(config => {
         const axis = config.axis;
         axis.assigned[assignTo] = assigned;
 
-        const range = assignMode === 'pitch' ? [0, 16383] : [0, 127];
-        axis.range[assignTo] = range;
+        const ranges = {
+            pitch: [[8192, 0], [8192, 16383]],
+            default: [[0, 64], [64, 127]]
+        };
+        const range = ranges[assignMode];
+        axis.range = range;
         axis.default[assignTo] = assignMode === 'pitch' ? [8192] : [64];
-        //+-が設定済み、かつ異なる入力が設定されていた場合、defaultの値を0にする
-        if (axis.assigned.every(e => e !== null) && axis.assigned[0] !== axis.assigned[1]) {
-            axis.default = [0, 0];
+        //+-が設定済み、かつ異なる入力が設定されていた場合、rangeを調整しdefaultの値を0にする
+        if (axis.assigned.every(e => e !== null)) {
+            if (assignMode === 'default') {
+                if (axis.assigned[0] !== axis.assigned[1]) {
+                    axis.range = [[0, 127], [0, 127]];
+                    axis.default = [0, 0];
+                }
+                else if (axis.assigned[0] === axis.assigned[1]) {
+                    axis.range = [[0, 127], [0, 127]];
+                    axis.default = [0, 0];
+                }
+            }
+            //pitch bendが片方でしか設定されていない場合の事は考慮しない
         }
         if (axis.assigned[assignTo]) {
             console.log(`axis ${config.label} is assigned to: ${axis.assigned[assignTo]}`);
