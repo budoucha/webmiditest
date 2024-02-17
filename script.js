@@ -110,20 +110,20 @@ axisConfigs.forEach(config => {
         const mode = inputQueue.getMode().split(","); // 最頻値、文字列から配列を復元する
         // ピッチベンドの場合第一値のみで判定、それ以外は両方で判定
         const assignMode = mode[0] >= 0xE0 ? 'pitch' : 'default';
-        const assigned = { pitch: mode[0], default: mode }[assignMode];
+        const assigned = { pitch: [mode[0]], default: mode }[assignMode];
         const assignTo = config.assignTo;
         const axis = config.axis;
         axis.assignMode[assignTo] = assignMode;
         axis.assign[assignTo] = assigned;
         // 正負のもう一方が未設定の場合はデフォルト挙動として同じ値を設定
         if (axis.assign[1 - assignTo] === null) {
-            axis.assignMode[1-assignTo] = assignMode;
+            axis.assignMode[1 - assignTo] = assignMode;
             axis.assign[1 - assignTo] = assigned;
         }
 
         const ranges = {
             pitch: [ // isSame? 0: 異なる, 1: 両方同じ
-                [[0,16383], [0, 16383]], // 実際には発生しないと思う
+                [[0, 16383], [0, 16383]], // 実際には発生しないと思う
                 [[8192, 0], [8192, 16383]]
             ],
             default: [ // isSame? 0: 異なる, 1: 両方同じ
@@ -157,9 +157,9 @@ axisConfigs.forEach(config => {
 });
 
 const onMIDISuccess = (midiAccess) => {
-    const inputs = midiAccess.inputs.values();
-    for (let input = inputs.next(); input && !input.done; input = inputs.next()) {
-        input.value.onmidimessage = onMIDIMessage;
+    const inputDevices = midiAccess.inputs.values();
+    for (let device = inputDevices.next(); device && !device.done; device = inputDevices.next()) {
+        device.value.onmidimessage = onMIDIMessage;
     }
     midiAccess.onstatechange = onMIDIConnectionChange;
 }
