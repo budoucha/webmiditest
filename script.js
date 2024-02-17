@@ -64,13 +64,13 @@ const inputQueue = { // 最新10入力を保持
 
 const axisX = {
     name: "axisX",
-    assigned: [null, null],
+    assign: [null, null],
     range: [[null, null], [null, null]],
     default: [null, null]
 };
 const axisY = {
     name: "axisY",
-    assigned: [null, null],
+    assign: [null, null],
     range: [[null, null], [null, null]],
     default: [null, null]
 };
@@ -95,7 +95,7 @@ axisConfigs.forEach(config => {
         const assigned = { pitch: mode[0], default: mode }[assignMode];
         const assignTo = config.assignTo;
         const axis = config.axis;
-        axis.assigned[assignTo] = assigned;
+        axis.assign[assignTo] = assigned;
 
         const ranges = {
             pitch: [ // isSame? 0: 異なる, 1: 両方同じ
@@ -107,15 +107,15 @@ axisConfigs.forEach(config => {
                 [[64, 0], [64, 127]]
             ]
         };
-        const isSame = JSON.stringify(axis.assigned[0]) === JSON.stringify(axis.assigned[1]);
+        const isSame = JSON.stringify(axis.assign[0]) === JSON.stringify(axis.assign[1]);
         const range = ranges[assignMode][{ false: 0, true: 1 }[isSame]];
 
         console.log(range)
         axis.range = range;
         axis.default = [range[0][0], range[1][0]];
 
-        if (axis.assigned[assignTo]) {
-            console.log(`axis ${config.label} is assigned to: ${axis.assigned[assignTo]}`);
+        if (axis.assign[assignTo]) {
+            console.log(`axis ${config.label} is assigned to: ${axis.assign[assignTo]}`);
             document.querySelector(`#axisConfig > #${config.buttonId} span.value.stick`).textContent = assigned;
             // rangeに関しては正負双方に影響を及ぼすた両方同時に更新
             document.querySelector(`#axisConfig > .${axis.name}.plus span.value.range`).textContent = `${axis.range[1][0]} ~ ${axis.range[1][1]}`;
