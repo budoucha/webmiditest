@@ -25,12 +25,15 @@ console.log = (...args) => {
     outputElement.scrollTop = outputElement.scrollHeight;
 };
 
+
 // mode switch
 const modeSwitch = document.getElementById('richMode');
 modeSwitch.addEventListener('change', (event) => {
-    richMode = event.target.checked;
-    const axisConfig = document.getElementById('axisConfig');
-    axisConfig.style.display = richMode ? 'block' : 'none';
+    const isRichMode = event.target.checked;
+    const richModeElements = document.querySelectorAll('.richModeOnly');
+    richModeElements.forEach(element => {
+        element.classList[isRichMode ? 'remove' : 'add']('hidden')
+    });
 });
 modeSwitch.dispatchEvent(new Event('change')); // 初期値反映
 
