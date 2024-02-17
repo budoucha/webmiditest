@@ -34,16 +34,6 @@ modeSwitch.addEventListener('change', (event) => {
 });
 dispatchEvent(new Event('change')); // 初期値反映
 
-const axisX = {
-    assigned: [null, null],
-    range: [[null, null], [null, null]],
-    default: null
-};
-const axisY = {
-    assigned: [null, null],
-    range: [[null, null], [null, null]],
-    default: null
-};
 
 const inputQueue = { // 最新10入力を保持
     maxLength: 10,
@@ -72,6 +62,17 @@ const inputQueue = { // 最新10入力を保持
     }
 };
 
+const axisX = {
+    assigned: [null, null],
+    range: [[null, null], [null, null]],
+    default: [null, null]
+};
+const axisY = {
+    assigned: [null, null],
+    range: [[null, null], [null, null]],
+    default: [null, null]
+};
+
 const axisConfigs = [
     { axis: axisX, assignTo: 1, buttonId: "assignXplus", direction: "right", label: "X+" },
     { axis: axisX, assignTo: 0, buttonId: "assignXminus", direction: "left", label: "X-" },
@@ -96,8 +97,11 @@ axisConfigs.forEach(config => {
 
         const range = assignMode === 'pitch' ? [0, 16383] : [0, 127];
         axis.range[assignTo] = range;
-        axis.default = assignMode === 'pitch' ? [8192] : [64];
-        //todo: +-で異なる軸が設定されていた場合、defaultの値を0にする
+        axis.default[assignTo] = assignMode === 'pitch' ? [8192] : [64];
+        //+-が設定済み、かつ異なる入力が設定されていた場合、defaultの値を0にする
+        if (axis.every(e => e !== null) && axis.assigned[0] !== axis.assigned[1]) {
+            axis.default = [0, 0];
+        }
         if (axis.assigned[assignTo]) {
             console.log(`axis ${config.label} is assigned to: ${axis.assigned[assignTo]}`);
             document.querySelector(`#axisConfig > #${config.buttonId} span.value.stick`).textContent = assigned;
