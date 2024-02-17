@@ -116,7 +116,7 @@ axisConfigs.forEach(config => {
         axis.assignMode[assignTo] = assignMode;
         axis.assign[assignTo] = assigned;
         // 正負のもう一方が未設定の場合はデフォルト挙動として同じ値を設定
-        if (axis.assign[1 - assignTo] === null) {
+        if (JSON.stringify(axis.assign[1 - assignTo]) === JSON.stringify([null])) {
             axis.assignMode[1 - assignTo] = assignMode;
             axis.assign[1 - assignTo] = assigned;
         }
