@@ -11,5 +11,28 @@ div#output {
     right: 1em;
     top: 1lh;
     background: #3348;
+    color: white;
     padding: 0.5lh 1em;
+}
+
+#axisConfig .axisConfig {
+    display: grid;
+    grid-template-columns: 1.5em 7.2em 8.4em;
+    place-items: center;
+}
+
+.axisConfig .label {
+    font-size: larger;
+    margin: 0;
+}
+
+.axisConfig p {
+    margin: 0.15lh 0;
+    line-height: 1.2;
+}
+
+#axisConfig button {
+    justify-self: end;
+    width: 10em;
+    height: 2.5lh;
 }

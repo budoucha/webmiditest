@@ -1,26 +1,48 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>MIDI input test</title>
     <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
+
 <body>
     <h1>MIDI input test</h1>
     <div>
         <input type="checkbox" id="richMode" checked> rich output mode(beta)
     </div>
     <div id="axisConfig">
-        <div id="assignXplus">X+ assign: <span class="value stick">none</span>, range: <span class="value range">none</span>
-            <button>hold and tilt stick</button>
+        <div id="assignXplus" class="axisConfig">
+            <p class="label">X+</p>
+            <p class="param">
+                assign: <span class="value stick">none</span><br>
+                range: <span class="value range">none</span>
+            </p>
+            <button>hold and tilt stick left</button>
         </div>
-        <div id="assignXminus">X- assign: <span class="value stick">none</span>, range: <span class="value range">none</span>
-            <button>hold and tilt stick</button>
+        <div id="assignXminus" class="axisConfig">
+            <p class="label">X-</p>
+            <p class="param">
+                assign: <span class="value stick">none</span>
+                <br>range: <span class="value range">none</span>
+            </p>
+            <button>hold and tilt stick right</button>
         </div>
-        <div id="assignYplus">Y+ assign: <span class="value stick">none</span>, range: <span class="value range">none</span>
-            <button>hold and tilt stick</button>
+        <div id="assignYplus" class="axisConfig">
+            <p class="label">Y+</p>
+            <p class="param">
+                assign: <span class="value stick">none</span><br>
+                range: <span class="value range">none</span>
+            </p>
+            <button>hold and tilt stick up</button>
         </div>
-        <div id="assignYminus">Y- assign: <span class="value stick">none</span>, range: <span class="value range">none</span>
-            <button>hold and tilt stick</button>
+        <div id="assignYminus" class="axisConfig">
+            <p class="label">Y-</p>
+            <p class="param">
+                assign: <span class="value stick">none</span><br>
+                range: <span class="value range">none</span>
+            </p>
+            <button>hold and tilt stick down</button>
         </div>
     </div>
     <div>

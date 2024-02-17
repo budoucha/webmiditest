@@ -100,8 +100,8 @@ axisConfigs.forEach(config => {
         //todo: +-で異なる軸が設定されていた場合、defaultの値を0にする
         if (axis.assigned[assignTo]) {
             console.log(`axis ${config.label} is assigned to: ${axis.assigned[assignTo]}`);
-            document.querySelector(`#axisConfig > #${config.buttonId} > span.value.stick`).textContent = assigned;
-            document.querySelector(`#axisConfig > #${config.buttonId} > span.value.range`).textContent = range;
+            document.querySelector(`#axisConfig > #${config.buttonId} span.value.stick`).textContent = assigned;
+            document.querySelector(`#axisConfig > #${config.buttonId} span.value.range`).textContent = range;
         } else {
             console.log(`axis ${config.label} is not assigned`);
         }
