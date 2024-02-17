@@ -228,6 +228,12 @@ const outputRich = (data) => {
 
 const onMIDIMessage = (message) => {
     const data = message.data;
+    const midiEvent = new CustomEvent('midiInput', {
+        detail: data,
+        bubbles: true
+    });
+    document.dispatchEvent(midiEvent);
+
     inputQueue.push([data[0], data[1]]);
     if (richMode) {
         outputRich(data);
