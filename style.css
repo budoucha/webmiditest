@@ -1,9 +1,19 @@
 div#output {
-    height:80vh;
+    height: 80vh;
     overflow-y: scroll;
     background-color: #000b;
     color: white;
     font-size: small;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* background: #3008; */
+    z-index: -100;
 }
 
 #axisConfig {
@@ -36,4 +46,9 @@ div#output {
     justify-self: end;
     width: 8em;
     height: 2.5lh;
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
 }
