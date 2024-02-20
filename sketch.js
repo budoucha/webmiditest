@@ -3,6 +3,8 @@ const app = new PIXI.Application({
   resizeTo: window
 });
 
+document.querySelector('canvas#sketch').replaceWith(app.view);
+
 document.addEventListener('midiInput', e => {
   const data = e.detail;
 });
