@@ -74,7 +74,7 @@ const axisY = {
     name: "axisY",
 };
 const initAxis = axis => {
-    if (axis.type !== "axis") return;
+    if (axis.type !== "axis") return; // 型チェック
     axis.assignMode = [null, null];
     axis.assign = [[null], [null]];
     axis.range = [[null, null], [null, null]];
