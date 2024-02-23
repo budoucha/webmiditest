@@ -92,6 +92,8 @@ const clearButton = document.querySelector('#axisConfig button.clear');
 clearButton.addEventListener('click', () => {
     initAxis(axisX);
     initAxis(axisY);
+    sessionStorage.removeItem(axisX.name);
+    sessionStorage.removeItem(axisY.name);
 });
 clearButton.dispatchEvent(new Event('click')); // 初期化
 
@@ -103,7 +105,18 @@ const axisConfigs = [
     { axis: axisY, assignTo: 0, buttonId: "assignYminus", direction: "down", label: "Y-" },
 ]
 
-axisConfigs.forEach(config => { // ボタンごとにイベントを設定
+axisConfigs.forEach(config => { // 軸ごとに設定
+    try { // 前回の値があればそれを復元
+        const axis = JSON.parse(sessionStorage.getItem(config.axis.name));
+        if (axis) {
+            config.axis = axis;
+            updateAxisTexts(axis);
+        }
+    } catch (error) {
+        console.log("Error occurred while parsing JSON from sessionStorage:", error);
+    }
+
+    // ボタンごとにイベントを設定
     const button = document.querySelector(`#axisConfig > #${config.buttonId} > button`);
     button.addEventListener('mousedown', () => {
         inputQueue.reset();
@@ -152,6 +165,7 @@ axisConfigs.forEach(config => { // ボタンごとにイベントを設定
 
         if (axis.assign[assignTo]) {
             console.log(`axis ${config.label} is assigned to: ${axis.assign[assignTo]}`);
+            sessionStorage.setItem(axis.name, JSON.stringify(axis));
             updateAxisTexts(axis);
         } else {
             console.log(`axis ${config.label} is not assigned`);
