@@ -103,7 +103,7 @@ const axisConfigs = [
     { axis: axisY, assignTo: 0, buttonId: "assignYminus", direction: "down", label: "Y-" },
 ]
 
-axisConfigs.forEach(config => {
+axisConfigs.forEach(config => { // ボタンごとにイベントを設定
     const button = document.querySelector(`#axisConfig > #${config.buttonId} > button`);
     button.addEventListener('mousedown', () => {
         inputQueue.reset();
