@@ -95,8 +95,9 @@ clearButton.addEventListener('click', () => {
     sessionStorage.removeItem(axisX.name);
     sessionStorage.removeItem(axisY.name);
 });
-clearButton.dispatchEvent(new Event('click')); // 初期化
-
+// 初期化
+initAxis(axisX);
+initAxis(axisY);
 
 const axisConfigs = [
     { axis: axisX, assignTo: 1, buttonId: "assignXplus", direction: "right", label: "X+" },
