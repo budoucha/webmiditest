@@ -81,7 +81,7 @@ const initAxis = axis => {
     axis.default = [null, null];
     updateAxisTexts(axis);
 }
-const updateAxisTexts = (axis) => {
+const updateAxisTexts = (axis) => { // 軸ごとに表示を更新
     if (axis.type !== "axis") return;
     document.querySelector(`#axisConfig > .${axis.name}.minus  span.value.stick`).textContent = axis.assign[0];
     document.querySelector(`#axisConfig > .${axis.name}.plus span.value.stick`).textContent = axis.assign[1];
