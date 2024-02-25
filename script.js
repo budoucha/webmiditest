@@ -95,9 +95,6 @@ clearButton.addEventListener('click', () => {
     sessionStorage.removeItem(axisX.name);
     sessionStorage.removeItem(axisY.name);
 });
-// 初期化
-initAxis(axisX);
-initAxis(axisY);
 
 const axisConfigs = [
     { axis: axisX, assignTo: 1, buttonId: "assignXplus", direction: "right", label: "X+" },
@@ -108,9 +105,12 @@ const axisConfigs = [
 
 axisConfigs.forEach(config => { // 軸ごとに設定
     try { // 前回の値があればそれを復元
-        const axis = JSON.parse(sessionStorage.getItem(config.axis.name));
-        if (axis) {
-            config.axis = axis;
+        const restored = JSON.parse(sessionStorage.getItem(config.axis.name));
+        if (restored) {
+            const axis = config.axis;
+            axis.assign = restored?.assign;
+            axis.assignMode = restored?.assignMode;
+            axis.range = restored?.range;
             updateAxisTexts(axis);
         }
     } catch (error) {
