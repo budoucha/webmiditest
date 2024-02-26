@@ -107,9 +107,8 @@ axisConfigs.forEach(config => { // 軸ごとに設定
     try { // 前回の値があればそれを復元
         const restored = JSON.parse(sessionStorage.getItem(config.axis.name));
         if (restored) {
-            const axis = config.axis;
-            Object.assign(axis, restored);
-            updateAxisTexts(axis);
+            Object.assign(config.axis, restored);
+            updateAxisTexts(config.axis);
         }
     } catch (error) {
         console.log("Error occurred while parsing JSON from sessionStorage:", error);
