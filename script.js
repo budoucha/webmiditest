@@ -108,9 +108,7 @@ axisConfigs.forEach(config => { // 軸ごとに設定
         const restored = JSON.parse(sessionStorage.getItem(config.axis.name));
         if (restored) {
             const axis = config.axis;
-            axis.assign = restored?.assign;
-            axis.assignMode = restored?.assignMode;
-            axis.range = restored?.range;
+            Object.assign(axis, restored);
             updateAxisTexts(axis);
         }
     } catch (error) {
