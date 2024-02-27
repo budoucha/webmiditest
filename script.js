@@ -250,7 +250,7 @@ const onMIDIMessage = (message) => {
     document.dispatchEvent(midiEvent);
 
     inputQueue.push([data[0], data[1]]);
-    if (richMode) {
+    if (isRichMode) {
         outputRich(data);
         return;
     }
