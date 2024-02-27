@@ -27,9 +27,10 @@ console.log = (...args) => {
 
 
 // mode switch
+let isRichMode = false;
 const modeSwitch = document.getElementById('richMode');
 modeSwitch.addEventListener('change', (event) => {
-    const isRichMode = event.target.checked;
+    isRichMode = event.target.checked;
     const richModeElements = document.querySelectorAll('.richModeOnly');
     richModeElements.forEach(element => {
         element.classList[isRichMode ? 'remove' : 'add']('hidden')
