@@ -12,7 +12,6 @@ canvas {
     left: 0;
     width: 100vw;
     height: 100vh;
-    /* background: #3008; */
     z-index: -100;
 }
 
