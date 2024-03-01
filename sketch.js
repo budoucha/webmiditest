@@ -10,6 +10,11 @@ app.stage.addChild(marker);
 marker.x = app.view.width / 2;
 marker.y = app.view.height / 2;
 
+const moveMarker = ([x, y]) => {
+  const ratio = 5;
+  marker.x += x * ratio;
+  marker.y -= y * ratio;
+}
 
 document.addEventListener('midiInput', e => {
   const data = e.detail;
