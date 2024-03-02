@@ -16,6 +16,9 @@ const moveMarker = ([x, y]) => {
   marker.y -= y * ratio;
 }
 
+const axisInput = [0, 0];
+setInterval(() => moveMarker(axisInput), 10);
+
 document.addEventListener('midiInput', e => {
   const data = e.detail;
 });
