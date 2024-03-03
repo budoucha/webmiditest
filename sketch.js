@@ -28,4 +28,5 @@ document.addEventListener('midiInput', e => {
         console.log(axis.name, axis.assignMode[side], data);
       }  
     });
+  });
 });
