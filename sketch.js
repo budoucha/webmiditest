@@ -21,4 +21,11 @@ setInterval(() => moveMarker(axisInput), 10);
 
 document.addEventListener('midiInput', e => {
   const data = e.detail;
+
+  [axisX, axisY].forEach((axis, index) => {
+    axis.assign.forEach((assign, side) => {
+      if (axis.assign[side].every((v, i) => v == data[i])) {
+        console.log(axis.name, axis.assignMode[side], data);
+      }  
+    });
 });
