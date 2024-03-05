@@ -24,9 +24,22 @@ document.addEventListener('midiInput', e => {
 
   [axisX, axisY].forEach((axis, index) => {
     axis.assign.forEach((assign, side) => {
+      // アサイン値がアサインモード依存のため前方一致で判定
       if (axis.assign[side].every((v, i) => v == data[i])) {
-        console.log(axis.name, axis.assignMode[side], data);
-      }  
+        //console.log(axis.name, axis.assignMode[side], data);
+        const isPitch = axis.assignMode[side] === 'pitch';
+        const value = isPitch ? (data[2] << 7) + data[1] : data[2];
+
+        const range = axis.range[side];
+        const rangeMax = Math.max(...range);
+        const rangeMin = Math.min(...range);
+        // todo: 軸のプラマイが同一軸に割り当てられている場合両側のrangeを連結して正規化する
+
+        const cutoffValue = Math.min(Math.max(rangeMin, value), rangeMax)
+        const normalize = value => (value - rangeMin) / (rangeMax - rangeMin);
+
+        axisInput[index] = normalize(cutoffValue) * [-1, 1][side];
+      }
     });
   });
 });
