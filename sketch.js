@@ -30,10 +30,14 @@ document.addEventListener('midiInput', e => {
         const isPitch = axis.assignMode[side] === 'pitch';
         const value = isPitch ? (data[2] << 7) + data[1] : data[2];
 
+        if(axis.assign[0].join() === axis.assign[1].join()) {
+          axis.range[0][0] = Math.min(...axis.range[0],...axis.range[1]);
+          axis.range[0][1] = Math.max(...axis.range[0],...axis.range[1]);
+          axis.range[1] = axis.range[0];
+        }
         const range = axis.range[side];
         const rangeMax = Math.max(...range);
         const rangeMin = Math.min(...range);
-        // todo: 軸のプラマイが同一軸に割り当てられている場合両側のrangeを連結して正規化する
 
         const cutoffValue = Math.min(Math.max(rangeMin, value), rangeMax)
         const normalize = value => (value - rangeMin) / (rangeMax - rangeMin);
