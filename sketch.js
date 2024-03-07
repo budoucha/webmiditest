@@ -30,16 +30,27 @@ document.addEventListener('midiInput', e => {
         const isPitch = axis.assignMode[side] === 'pitch';
         const value = isPitch ? (data[2] << 7) + data[1] : data[2];
 
-        if(axis.assign[0].join() === axis.assign[1].join()) {
-          axis.range[0][0] = Math.min(...axis.range[0],...axis.range[1]);
-          axis.range[0][1] = Math.max(...axis.range[0],...axis.range[1]);
+        if (axis.assign[0].join() === axis.assign[1].join()) {
+          axis.range[0][0] = Math.min(...axis.range[0], ...axis.range[1]);
+          axis.range[0][1] = Math.max(...axis.range[0], ...axis.range[1]);
           axis.range[1] = axis.range[0];
+
+          const range = axis.range[side];
+          const rangeMax = Math.max(...range);
+          const rangeMin = Math.min(...range);
+
+          const cutoffValue = Math.min(Math.max(rangeMin, value), rangeMax);
+          const normalize = value => (value - rangeMin) / (rangeMax - rangeMin);
+
+          axisInput[index] = 2 * normalize(cutoffValue) * [-1, 1][side] - 1;
+          return;
+
         }
         const range = axis.range[side];
         const rangeMax = Math.max(...range);
         const rangeMin = Math.min(...range);
 
-        const cutoffValue = Math.min(Math.max(rangeMin, value), rangeMax)
+        const cutoffValue = Math.min(Math.max(rangeMin, value), rangeMax);
         const normalize = value => (value - rangeMin) / (rangeMax - rangeMin);
 
         axisInput[index] = normalize(cutoffValue) * [-1, 1][side];
