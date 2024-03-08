@@ -9,7 +9,7 @@ const moveMarker = ([x, y]) => {
   marker.x += x * ratio;
   marker.y -= y * ratio;
   marker.style.left = marker.x + "px";
-  marker.style.top = marker.y + "px";  
+  marker.style.top = marker.y + "px";
 }
 
 const axisInput = [0, 0];
@@ -20,6 +20,8 @@ document.addEventListener('midiInput', e => {
 
   // 軸入力
   [axisX, axisY].forEach((axis, index) => {
+    //assignに有効な値が入っていなければ飛ばす
+    if (axis.assign[0] === null || axis.assign[1] === null) return;
     axis.assign.forEach((assign, side) => {
       // アサイン値がアサインモード依存のため前方一致で判定
       if (axis.assign[side].every((v, i) => v == data[i])) {

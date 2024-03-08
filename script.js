@@ -69,10 +69,12 @@ const inputQueue = { // 最新10入力を保持
 const axisX = {
     type: "axis",
     name: "axisX",
+    assign: [null, null]
 };
 const axisY = {
     type: "axis",
     name: "axisY",
+    assign: [null, null]
 };
 const initAxis = axis => {
     if (axis.type !== "axis") return; // 型チェック
